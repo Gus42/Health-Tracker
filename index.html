@@ -7,14 +7,31 @@
 		<link rel="stylesheet" href="css/style.css">
 	</head>
 	<body>
-		<div id="container">Loading...</div>
-		<!-- The label to search food item -->
+		<section id="todoapp">
+		    <header id="header">
+		    	<h1>Todos</h1>
+		    	<input id="new-todo" placeholder="What needs to be done?">
+			</header>
+			<section id="main">
+		    	<ul id="todo-list"></ul>
+		    </section>
+		</section>
+
+		<script type="text/template" id="item-template">
+	      <div class="view">
+	        <input class="toggle" type="checkbox">
+	        <label><%- title %></label>
+	      </div>
+	    </script>
+
+
+		<!-- The label to search food item
 		<input class="search" type="text" placeholder="Search food">
 
-		<!-- The ul where it will show what come from API -->
+		<!-- The ul where it will show what come from API
 		<ul class="food-found"></ul>
 
-		<!-- The item of daily diet -->
+		<!-- The item of daily diet
 		<ul class="food-chosed"></ul>
 		<div class="total">Total calorie:</div>
 
@@ -23,7 +40,7 @@
 				<label><%- title %></label>
 				<button class="destroy"></button>
 			</li>
-		</script>
+		</script> -->
 
 		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
 		<script src="http://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.3.3/underscore-min.js"></script>

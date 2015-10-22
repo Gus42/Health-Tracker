@@ -1,10 +1,9 @@
-(function ($) {
-	'use strict';
+//(function ($) {
+
 
 	function log(x) {
 		console.log(x);
 	}
-	log('a');
 
 
 	var Food = Backbone.Model.extend({
@@ -20,29 +19,44 @@
 	});
 
 
-	var AppView = Backbone.View.extend({
-      // el - stands for element. Every view has a element associate in with HTML
-      //      content will be rendered.
-      el: '#container',
-      // It's the first function called when this view it's instantiated.
-      template: _.template("<h3>Hello <%- who %></h3>"),
-      initialize: function(){
-      	log('#container');
-      	log($('#container'));
+	//exercices for understand backbone
 
-      	log(this.el);
-      	//log(document.getElementById('container'));
-      	log(this.$el);
-        this.render();
-        //document.getElementById('container').innerHTML = 'ew';
-      },
-      // $el - it's a cached jQuery object (el), in which you can use jQuery functions
-      //       to push content. Like the Hello World in this case.
-      render: function(){
-        this.$el.html(this.template({'who': 'bagigio!'}));
+	var app = {}; // create namespace for our app
+
+    app.Todo = Backbone.Model.extend({
+      defaults: {
+        title: '',
+        completed: false
       }
     });
 
-    var appView = new AppView();
+	app.TodoList = Backbone.Collection.extend({
+		model: app.Todo,
+		localStorage: new Store("backbone-todo")
+    });
 
-})($);
+    // instance of the Collection
+    app.todoList = new app.TodoList();
+
+    // renders individual todo items list (li)
+	app.TodoView = Backbone.View.extend({
+		tagName: 'li',
+		template: _.template($('#item-template').html()),
+		render: function() {
+			this.$el.html(this.template(this.model.toJSON()));
+			return this; // enable chained calls
+		}
+	});
+	//var todo = new app.Todo({title: 'aaa'});
+	//var view = new app.TodoView({model: todo});
+	//view.render();
+
+	var object = {},
+		callback = function(msg) { console.log("Triggered " + msg); };
+
+	_.extend(object, Backbone.Events); // now  obj can receive on and trigger event,
+
+	object.on("my_event", callback);
+
+	object.trigger("my_event", "my custom event");
+//})($);
