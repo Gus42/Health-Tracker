@@ -25,7 +25,8 @@
 
     app.Todo = Backbone.Model.extend({
       defaults: {
-        title: '',
+        item: '',
+        calorie: 0,
         completed: false
       }
     });
@@ -47,7 +48,7 @@
 			return this; // enable chained calls
 		}
 	});
-	//var todo = new app.Todo({title: 'aaa'});
+	//var todo = new app.Todo({item: 'aaa'});
 	//var view = new app.TodoView({model: todo});
 	//view.render();
 
@@ -75,7 +76,8 @@
         app.todoList.fetch(); // Loads list from local storage
       },
       events: {
-        'keypress #new-todo': 'createTodoOnEnter'
+        'keypress #new-todo': 'createTodoOnEnter',
+        'click .view': 'storeItem'
       },
       createTodoOnEnter: function(e){
         if ( e.which !== 13 || !this.input.val().trim() ) { // ENTER_KEY = 13
@@ -93,10 +95,20 @@
         app.todoList.each(this.addOne, this);
       },
       newAttributes: function(){
+		jQuery.ajax('https://api.nutritionix.com/v1_1/search/'+this.input.val().trim()+'?results=0%3A20&cal_min=0&cal_max=50000&fields=item_name%2Cbrand_name%2Citem_id%2Cbrand_id&appId=06649f8e&appKey=01e8a728a6903e04c015d7c1ac36df6b')
+			.done(function( data ) {
+				log(data);
+				data.hits.forEach(function (food) {
+					log(food.fields.item_name);
+				});
+			});
         return {
-          title: this.input.val().trim(),
+          item: this.input.val().trim(),
           completed: false
         }
+      },
+      storeItem: function(e){
+        console.log(e.target);
       }
     });
 
